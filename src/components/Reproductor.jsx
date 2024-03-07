@@ -124,7 +124,8 @@ const Reproductor = ({ cancion, isplaying, setisplaying }) => {
         <div className="space-y-2">
           <div className="bg-gray-200 dark:bg-black rounded-full overflow-hidden">
             <div
-              className="bg-lime-500 dark:bg-lime-400 w-3/4 h-1.5"
+              className="bg-lime-500 dark:bg-lime-400 h-1.5"
+              style={{ width: `${cancion.progreso+"%"}`}}
               role="progressbar"
               aria-valuenow={1000}
               aria-valuemin={0}
@@ -132,8 +133,8 @@ const Reproductor = ({ cancion, isplaying, setisplaying }) => {
             />
           </div>
           <div className="text-gray-500 dark:text-gray-400 flex justify-between text-sm font-medium tabular-nums">
-            <div>2:15</div>
-            <div>{(cancion.duration / 60).toFixed(2)}</div>
+            <div>{parseFloat(cancion.currentTime).toFixed(2)}</div>
+            <div>{parseFloat(cancion.duracion).toFixed(2)}</div>
           </div>
         </div>
       </div>

@@ -57,6 +57,9 @@ export default function Card() {
       type: "album",
     },
     type: "track",
+    currentTime: 10,
+    duracion: 100,
+    progreso: 25
   });
   const [isplaying, setisplaying] = useState(false);
 
@@ -72,6 +75,7 @@ export default function Card() {
 
   const handlePlay = (track)=>{
     setCancion(track);
+    setisplaying(false);
     if (isplaying) {
       setisplaying(false);
     } else {
@@ -82,7 +86,7 @@ export default function Card() {
   const onPlaying = () =>{
     const duracion = audio.current.duration;
     const currentTime = audio.current.currentTime;
-    console.log(duracion , currentTime);
+    setCancion({...cancion, duracion: duracion, currentTime: currentTime , progreso : currentTime / duracion * 100}); 
   }
 
   const RealizarBusqueda = () => {
