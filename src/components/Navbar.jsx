@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import UserAvatar from "./UserAvatar";
