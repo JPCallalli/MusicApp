@@ -1,11 +1,103 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { PlaylistContext } from "../context/playlistContext";
 import Reproductor from "./Reproductor";
 
 const PlaylistItems = () => {
-  const { playlistItems } = useContext(PlaylistContext);
-  const [list, setList] = useState([]);
+  const { playlistItems, setPlaylistItems } = useContext(PlaylistContext);
   const [isplaying, setisplaying] = useState(false);
+  const [cancion, setCancion] = useState({
+    id: 1062775862,
+    readable: true,
+    title: "The Moon Represents My Heart",
+    title_short: "The Moon Represents My Heart",
+    title_version: "",
+    link: "https://www.deezer.com/track/1062775862",
+    duration: 147,
+    rank: 111029,
+    explicit_lyrics: false,
+    explicit_content_lyrics: 0,
+    explicit_content_cover: 2,
+    preview:
+      "https://cdns-preview-d.dzcdn.net/stream/c-de6a1b5c7d1c003d8263d65784fdc234-3.mp3",
+    md5_image: "26e0eb9f63a5d347136c129a836908d9",
+    artist: {
+      id: 5238090,
+      name: "Drexler",
+      link: "https://www.deezer.com/artist/5238090",
+      picture: "https://api.deezer.com/artist/5238090/image",
+      picture_small:
+        "https://e-cdns-images.dzcdn.net/images/artist/bab5d13647c9cf0bf85fc1a1c855f1aa/56x56-000000-80-0-0.jpg",
+      picture_medium:
+        "https://e-cdns-images.dzcdn.net/images/artist/bab5d13647c9cf0bf85fc1a1c855f1aa/250x250-000000-80-0-0.jpg",
+      picture_big:
+        "https://e-cdns-images.dzcdn.net/images/artist/bab5d13647c9cf0bf85fc1a1c855f1aa/500x500-000000-80-0-0.jpg",
+      picture_xl:
+        "https://e-cdns-images.dzcdn.net/images/artist/bab5d13647c9cf0bf85fc1a1c855f1aa/1000x1000-000000-80-0-0.jpg",
+      tracklist: "https://api.deezer.com/artist/5238090/top?limit=50",
+      type: "artist",
+    },
+    album: {
+      id: 169628632,
+      title: "The Moon Represents My Heart",
+      cover: "https://api.deezer.com/album/169628632/image",
+      cover_small:
+        "https://e-cdns-images.dzcdn.net/images/cover/26e0eb9f63a5d347136c129a836908d9/56x56-000000-80-0-0.jpg",
+      cover_medium:
+        "https://e-cdns-images.dzcdn.net/images/cover/26e0eb9f63a5d347136c129a836908d9/250x250-000000-80-0-0.jpg",
+      cover_big:
+        "https://e-cdns-images.dzcdn.net/images/cover/26e0eb9f63a5d347136c129a836908d9/500x500-000000-80-0-0.jpg",
+      cover_xl:
+        "https://e-cdns-images.dzcdn.net/images/cover/26e0eb9f63a5d347136c129a836908d9/1000x1000-000000-80-0-0.jpg",
+      md5_image: "26e0eb9f63a5d347136c129a836908d9",
+      tracklist: "https://api.deezer.com/album/169628632/tracks",
+      type: "album",
+    },
+    type: "track",
+    currentTime: 10,
+    duracion: 100,
+    progreso: 25,
+  });
+
+
+  const audio = useRef();
+
+  useEffect(() => {
+    if (isplaying) {
+      audio.current.play();
+    } else {
+      audio.current.pause();
+    }
+  }, [isplaying]);
+
+  const handlePlay = (playlist) => {
+    setCancion(playlist);
+    setisplaying(false);
+    if (isplaying) {
+      setisplaying(false);
+    } else {
+      setisplaying(true);
+    }
+  };
+
+  const eliminarPlaylistItem = id => {
+    const confirmacion = confirm('Desea eliminar de Favoritos?')
+    if(confirmacion){
+      const ListaActualizada = playlistItems.filter(playlistItem => playlistItem.id !== id);
+    setPlaylistItems(ListaActualizada);
+    }
+  }
+
+
+  const onPlaying = () => {
+    const duracion = audio.current.duration;
+    const currentTime = audio.current.currentTime;
+    setCancion({
+      ...cancion,
+      duracion: duracion,
+      currentTime: currentTime,
+      progreso: (currentTime / duracion) * 100,
+    });
+  };
 
   return (
     <>
@@ -40,7 +132,7 @@ const PlaylistItems = () => {
                         </div>
                       </th>
                       <th className="p-2 whitespace-nowrap">
-                        <div className="font-semibold text-center">. . .</div>
+                        <div className="font-semibold text-center"></div>
                       </th>
                     </tr>
                   </thead>
@@ -58,7 +150,10 @@ const PlaylistItems = () => {
                                 alt="Imagen álbum"
                               />
 
-                              <button className="hover:scale-110 text-white transform opacity-0 translate-x-2.5 -translate-y-7 group-hover:opacity-100 transition">
+                              <button
+                                className="hover:scale-110 text-white transform opacity-0 translate-x-2.5 -translate-y-7 group-hover:opacity-100 transition"
+                                onClick={() => handlePlay(playlist)}
+                              >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="20"
@@ -74,7 +169,9 @@ const PlaylistItems = () => {
                           </div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
-                          <div className="text-left text-white">{playlist.title}</div>
+                          <div className="text-left text-white">
+                            {playlist.title}
+                          </div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-left text-white">
@@ -88,18 +185,24 @@ const PlaylistItems = () => {
                         </td>
                         <td className="p-2">
                           <div className="text-sm text-center text-white">
-                            {playlist.duration}
+                            {(parseFloat(playlist.duration) / 60).toFixed(2)}
                           </div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
-                          <button className="text-sm text-center">
+                          <button 
+                          className="text-sm text-center"
+                          onClick={() => eliminarPlaylistItem(playlist.id)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              width="26"
-                              height="26"
-                              viewBox="20 20 384 512"
+                              height="20"
+                              width="17.5"
+                              viewBox="0 0 448 512"
                             >
-                              <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                              <path
+                                fill="#ff0000"
+                                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                              />
                             </svg>
                           </button>
                         </td>
@@ -113,7 +216,13 @@ const PlaylistItems = () => {
         </div>
       </section>
       {/* Reproductor */}
-      {/* <Reproductor list={list}/> */}
+      <audio src={cancion.preview} ref={audio} onTimeUpdate={onPlaying} />
+      <Reproductor
+        cancion={cancion}
+        isplaying={isplaying}
+        setisplaying={setisplaying}
+        audio={audio}
+      />
     </>
   );
 };

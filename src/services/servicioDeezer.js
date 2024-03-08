@@ -13,7 +13,7 @@ const servicioDeezer = (url, param, cant=1) => {
   
      return axios.get(url, configAxios)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data.data;
       })
       .catch((err) => {

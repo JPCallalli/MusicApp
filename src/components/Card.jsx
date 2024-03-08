@@ -6,6 +6,8 @@ import AlbumSlider from "./AlbumSlider";
 import Reproductor from "./Reproductor";
 
 export default function Card() {
+  const { addPlaylistItem } = useContext(PlaylistContext);
+
   const [tracks, setTracks] = useState([]);
   const [index, setIndex] = useState(0);
   const [busqueda, setBusqueda] = useState("");
@@ -106,8 +108,6 @@ export default function Card() {
       });
   }, [search, index]);
 
-  const { addPlaylistItem } = useContext(PlaylistContext);
-
   return (
     <>
       <div className="max-w-4xl mx-auto mt-4 mb-10">
@@ -154,15 +154,15 @@ export default function Card() {
         </div>
       </div>
       {/* Slider de Albums */}
-      <div className=" h-80 flex justify-around">
-        <div className="mx-20">
+      <div className=" h-80 flex justify-center mx-10">
+        <div className="mx-10">
           <AlbumSlider />
         </div>
-        <aside className="w-full border-sky-100 mx-10 relative flex justify-around">
-          <div className="flex items-center justify-center bg-gray-900 absolute">
+        <aside className="max-w-3xl border-sky-100 mx-10 flex justify-around overflow-x-auto gap-2">
+          <div className="flex items-center justify-center">
             {/* Card */}
             <a
-              className="hover:bg-gray-700 delay-50 duration-100 bg-gray-800 p-5 rounded-lg w-60 group"
+              className="hover:bg-gray-700 delay-50 duration-100 bg-gray-800 p-5 rounded-lg w-40 group"
               href=""
             >
               {/* Image Cover */}
@@ -171,12 +171,51 @@ export default function Card() {
                 className="w-full rounded shadow"
               />
               {/* Title */}
-              <h3 className="text-gray-200 font-bold mt-5"> Top 50 - Global</h3>
+              <h3 className="text-gray-200 font-bold mt-5"> Top 50 - Global Music</h3>
               {/* Description */}
               <p className="text-gray-400 font-light mt-2 text-xs">
                 {" "}
-                Your daily update of the most played track from around the
-                world...
+                Tu playlist con las mejores canciones 
+              </p>
+            </a>
+          </div>
+          <div className="flex items-center justify-center">
+            {/* Card */}
+            <a
+              className="hover:bg-gray-700 delay-50 duration-100 bg-gray-800 p-5 rounded-lg w-40 group"
+              href=""
+            >
+              {/* Image Cover */}
+              <img
+                src="https://picsum.photos/250/250"
+                className="w-full rounded shadow"
+              />
+              {/* Title */}
+              <h3 className="text-gray-200 font-bold mt-5"> Top 50 - Pop Rock</h3>
+              {/* Description */}
+              <p className="text-gray-400 font-light mt-2 text-xs">
+                {" "}
+                Tu playlist con las mejores canciones 
+              </p>
+            </a>
+          </div>
+          <div className="flex items-center justify-center">
+            {/* Card */}
+            <a
+              className="hover:bg-gray-700 delay-50 duration-100 bg-gray-800 p-5 rounded-lg w-40 group"
+              href=""
+            >
+              {/* Image Cover */}
+              <img
+                src="https://picsum.photos/250/250"
+                className="w-full rounded shadow"
+              />
+              {/* Title */}
+              <h3 className="text-gray-200 font-bold mt-5"> Top 50 - Pop Rock</h3>
+              {/* Description */}
+              <p className="text-gray-400 font-light mt-2 text-xs">
+                {" "}
+                Tu playlist con las mejores canciones 
               </p>
             </a>
           </div>

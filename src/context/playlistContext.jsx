@@ -29,8 +29,9 @@ const PlaylistProvider = ({ children }) => {
         }                    
     }
 
+
     return (
-        <PlaylistContext.Provider value={{ playlistItems, addPlaylistItem }}>
+        <PlaylistContext.Provider value={{ playlistItems, addPlaylistItem, setPlaylistItems }}>
             {children}
         </PlaylistContext.Provider>
     )

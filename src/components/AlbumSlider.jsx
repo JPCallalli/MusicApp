@@ -12,20 +12,27 @@ const AlbumSlider = () => {
   return (
     <div className="slider-container"
     style={{ 
-        width: 600
+        width: 500
     }}>
       <Slider {...settings}>
           <div>
             <img
               src='https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFsYnVtZXN8ZW58MHx8MHx8fDA%3D'
-              className="w-full h-80"
+              className="w-full h-80 rounded"
               alt="..."
             />
           </div>
           <div >
             <img
               src='https://images.unsplash.com/photo-1470019693664-1d202d2c0907?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGdlbmVyb3MlMjBtdXNpY2FsZXN8ZW58MHx8MHx8fDA%3D'
-              className="w-full h-80"
+              className="w-full h-80 rounded"
+              alt="..."
+            />
+          </div>
+          <div >
+            <img
+              src='https://picsum.photos/250/250'
+              className="w-full h-80 rounded"
               alt="..."
             />
           </div>
