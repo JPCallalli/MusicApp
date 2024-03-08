@@ -2,11 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
 import { PlaylistContext } from "../context/playlistContext";
 
-const Reproductor = ({ cancion, isplaying, setisplaying }) => {
-
-
-
+const Reproductor = ({ cancion, isplaying, setisplaying, audio }) => {
   const { playlistItems, addPlaylistItem } = useContext(PlaylistContext);
+
+  const barraRef = useRef();
+
+  const SaltarBarra = (e) => {
+    let barra = barraRef.current.clientWidth;
+    const saltobarra = e.nativeEvent.offsetX;
+
+    const saltoProgreso = (saltobarra / barra) * 100;
+    audio.current.currentTime = (saltoProgreso / 100) * cancion.duracion;
+  };
+
 
   return (
     <footer className="h-full rounded-lg shadow m-4 bg-gray-800 sticky bottom-0 flex justify-around">
@@ -32,14 +40,16 @@ const Reproductor = ({ cancion, isplaying, setisplaying }) => {
       </div>
       <div className="w-full max-w-screen-sm">
         <div className="text-black bg-gray-800 dark:text-white lg:rounded-b-xl py-4 px-1 sm:px-3 flex justify-between">
-          <button type="button" className="mx-auto">
-            <svg width={26} height={26} fill="none">
-              <path
-                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
+          <button type="button" className="mx-auto" onClick={() => addPlaylistItem({ ...cancion })}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="20"
+              fill="currentColor"
+              className="bi bi-heart"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
             </svg>
           </button>
           <button type="button" className="block mx-auto">
@@ -122,14 +132,14 @@ const Reproductor = ({ cancion, isplaying, setisplaying }) => {
           </button>
         </div>
         <div className="space-y-2">
-          <div className="bg-gray-200 dark:bg-black rounded-full overflow-hidden">
+          <div
+            className="bg-gray-200 dark:bg-black rounded-full overflow-hidden cursor-pointer"
+            onClick={SaltarBarra}
+            ref={barraRef}
+          >
             <div
-              className="bg-lime-500 dark:bg-lime-400 h-1.5"
-              style={{ width: `${cancion.progreso+"%"}`}}
-              role="progressbar"
-              aria-valuenow={1000}
-              aria-valuemin={0}
-              aria-valuemax={4550}
+              className="progress-bar bg-lime-500 h-1.5"
+              style={{ width: `${cancion.progreso + "%"}` }}
             />
           </div>
           <div className="text-gray-500 dark:text-gray-400 flex justify-between text-sm font-medium tabular-nums">

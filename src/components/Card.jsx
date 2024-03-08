@@ -7,6 +7,7 @@ import Reproductor from "./Reproductor";
 
 export default function Card() {
   const [tracks, setTracks] = useState([]);
+  const [index, setIndex] = useState(0);
   const [busqueda, setBusqueda] = useState("");
   const [search, setSearch] = useState("drexler");
   const [cancion, setCancion] = useState({
@@ -64,7 +65,7 @@ export default function Card() {
   const [isplaying, setisplaying] = useState(false);
 
   const audio = useRef();
-  
+
   useEffect(() => {
     if (isplaying) {
       audio.current.play();
@@ -95,7 +96,7 @@ export default function Card() {
   };
 
   useEffect(() => {
-    servicioDeezer(`${import.meta.env.VITE_ENDPOINT_BASE}`, `${search}`)
+    servicioDeezer(`${import.meta.env.VITE_ENDPOINT_BASE}`, `${search}`, `${index}`)
       .then((res) => {
         setTracks(res);
         console.log(res);
@@ -103,7 +104,7 @@ export default function Card() {
       .catch((err) => {
         console.log("Error al obtener los datos");
       });
-  }, [search]);
+  }, [search, index]);
 
   const { addPlaylistItem } = useContext(PlaylistContext);
 
@@ -252,6 +253,7 @@ export default function Card() {
         <button
           href="#"
           className="flex items-center justify-center px-4 h-10 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          onClick={() => setIndex(index - 25)}
         >
           Previous
         </button>
@@ -259,6 +261,7 @@ export default function Card() {
         <button
           href="#"
           className="flex items-center justify-center px-4 h-10 ms-3 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          onClick={() => setIndex(index + 25)}
         >
           Next
         </button>
@@ -269,6 +272,7 @@ export default function Card() {
       cancion={cancion}
       isplaying={isplaying}
       setisplaying={setisplaying}
+      audio={audio}
       />
     </>
   );
